@@ -2,9 +2,10 @@
 package com.PortafolioWebAT.mgb.Controller;
 
 import com.PortafolioWebAT.mgb.Entity.Persona;
-import com.PortafolioWebAT.mgb.Services.PersonaServiceIMP;
+import com.PortafolioWebAT.mgb.Interface.IPersonaService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,41 +19,46 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class PersonaController {
-    @Autowired PersonaServiceIMP personaserviceimp;
+    @Autowired IPersonaService ipersonaService;
     
-    @GetMapping("/personas/traer")
+    @GetMapping("personas/traer")
     public List<Persona> getPersona(){
-        return personaserviceimp.getPersona();
+        return ipersonaService.getPersona();
     }
+    
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/personas/crear")
     public String createPersona(@RequestBody Persona persona){
-        personaserviceimp.savePersona(persona);
-        return "Su Usuario ha sido creado con Éxito";
+        ipersonaService.savePersona(persona);
+        return "La persona fue creada correctamente";
     }
     
-    @DeleteMapping ("/personas/eliminar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/personas/borrar/{id}")
     public String deletePersona(@PathVariable Long id){
-        personaserviceimp.deletePersona(id);
-        return "El usuario ha sido eliminado";
+        ipersonaService.deletePersona(id);
+        return "La persona fue eliminada correctamente";
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/personas/editar/{id}")
     public Persona editPersona(@PathVariable Long id,
-                                @RequestParam("nombre") String NuevoNombre,
-                                @RequestParam("apellido") String NuevoApellido,
-                                @RequestParam("img") String NuevoImg){
-        Persona persona = personaserviceimp.findPersona(id);
-                   
-        persona.setNombre(NuevoNombre);
-        persona.setApellido(NuevoApellido);
-        persona.setImg (NuevoImg);
-                                    
-                   personaserviceimp.savePersona(persona);
-                   return persona;
-                                }
+                               @RequestParam("nombre") String nuevoNombre,
+                               @RequestParam("apellido") String nuevoApellido,
+                               @RequestParam("img") String nuevoImg){
+        Persona persona = ipersonaService.findPersona(id);
+        
+        persona.setNombre(nuevoNombre);
+        persona.setApellido(nuevoApellido);
+        persona.setImg(nuevoImg);
+        
+        ipersonaService.savePersona(persona);
+        return persona;
+    }
     
-
+    @GetMapping("personas/traer/perfil")
+    public Persona findPersona(){
+        return ipersonaService.findPersona((long)1);
+    }
+   
 }
-    
-    
-

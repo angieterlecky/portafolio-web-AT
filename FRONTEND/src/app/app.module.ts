@@ -15,6 +15,8 @@ import { LoginComponent } from './components/login/login.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { HardsoftComponent } from './components/hardsoft/hardsoft.component';
 import { ProyectosComponent } from './components/proyectos/proyectos.component';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -29,12 +31,13 @@ import { ProyectosComponent } from './components/proyectos/proyectos.component';
     HomeComponent,
     LoginComponent,
     HardsoftComponent,
-    ProyectosComponent
+    ProyectosComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgCircleProgressModule.forRoot({})
+    NgCircleProgressModule.forRoot({}),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,4 @@
-package com.PortafolioWebAT.mgb;
+package com.portfolio.mgb;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
